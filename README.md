@@ -20,7 +20,6 @@ S3 bucket for Terraform state storage
 DynamoDB table for state locking
 (Other resources specific to your chosen track)
 Terraform State Management:
-
 Implement remote state storage using S3
 Set up state locking with DynamoDB
 Configure workspace separation for different environments
