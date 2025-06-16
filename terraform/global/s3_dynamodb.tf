@@ -10,7 +10,7 @@ resource "aws_s3_bucket_versioning" "tf_state_versioning" {
 }
 
 resource "aws_dynamodb_table" "tf_lock" {
-  name         = "my-tf-lock-table"
+  name         = "my-tf-lock-table1"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
   attribute {
