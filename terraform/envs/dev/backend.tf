@@ -3,7 +3,7 @@ terraform {
     bucket         = "my-tf-state-bucket"
     key            = "dev/terraform.tfstate"
     region         = "us-west-2"
-    dynamodb_table = "my-tf-lock-table"
+    dynamodb_table = "my-tf-lock-table1"
     encrypt        = true
   }
 }
