@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "my-tf-state-bucket"
+  bucket = "my-tf-state-bucket-test"
 }
 resource "aws_s3_bucket_versioning" "tf_state_versioning" {
   bucket = aws_s3_bucket.tf_state.id
