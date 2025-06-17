@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "my-tf-state-bucket-test"
+  bucket = "my-tf-state-bucket-test-20250617"
 }
 resource "aws_s3_bucket_versioning" "tf_state_versioning" {
   bucket = aws_s3_bucket.tf_state.id
@@ -10,7 +10,7 @@ resource "aws_s3_bucket_versioning" "tf_state_versioning" {
 }
 
 resource "aws_dynamodb_table" "tf_lock" {
-  name         = "my-tf-lock-table1"
+  name         = "my-tf-lock-table1--20250617"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
   attribute {
