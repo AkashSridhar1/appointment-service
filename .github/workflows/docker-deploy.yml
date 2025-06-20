@@ -9,8 +9,8 @@ on:
       - 'patient-service/**'
 
 env:
-  AWS_REGION: ap-south-1
-  ECR_REGISTRY: 123456789012.dkr.ecr.ap-south-1.amazonaws.com
+  AWS_REGION: us-west-2
+  ECR_REGISTRY: 311141540400.dkr.ecr.us-west-2.amazonaws.com
 
 jobs:
   docker:
