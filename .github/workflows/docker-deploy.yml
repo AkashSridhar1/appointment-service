@@ -26,21 +26,17 @@ jobs:
           echo "🔍 patient-service contents:"
           ls -la ./patient-service || echo "❌ patient-service folder missing"
 
-      - name: Debug: Check AWS Secrets Are Available
+      - name: Check AWS Secrets Available
         run: |
           if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
-            echo "❌ AWS_ACCESS_KEY_ID secret is missing"
+            echo "❌ AWS_ACCESS_KEY_ID is missing"
             exit 1
-          else
-            echo "✅ AWS_ACCESS_KEY_ID is available"
           fi
-
           if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
-            echo "❌ AWS_SECRET_ACCESS_KEY secret is missing"
+            echo "❌ AWS_SECRET_ACCESS_KEY is missing"
             exit 1
-          else
-            echo "✅ AWS_SECRET_ACCESS_KEY is available"
           fi
+          echo "✅ AWS secrets are present"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -57,7 +53,7 @@ jobs:
         run: |
           ECR_REGISTRY=311141540400.dkr.ecr.us-west-2.amazonaws.com
           if [ ! -d "./appointment-service" ]; then
-            echo "❌ appointment-service directory not found. Exiting."
+            echo "❌ appointment-service directory not found"
             exit 1
           fi
           docker build -t $ECR_REGISTRY/appointment-service:latest ./appointment-service
@@ -67,7 +63,7 @@ jobs:
         run: |
           ECR_REGISTRY=311141540400.dkr.ecr.us-west-2.amazonaws.com
           if [ ! -d "./patient-service" ]; then
-            echo "❌ patient-service directory not found. Exiting."
+            echo "❌ patient-service directory not found"
             exit 1
           fi
           docker build -t $ECR_REGISTRY/patient-service:latest ./patient-service
