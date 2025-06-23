@@ -1,0 +1,77 @@
+name: Docker Build & Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    name: Build and Push Docker Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Confirm Workflow Start
+        run: echo "🚀 Docker workflow started"
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Show Repo Structure
+        run: |
+          echo "📁 Directory structure at runtime:"
+          ls -la
+          echo "🔍 appointment-service contents:"
+          ls -la ./appointment-service || echo "❌ appointment-service folder missing"
+          echo "🔍 patient-service contents:"
+          ls -la ./patient-service || echo "❌ patient-service folder missing"
+
+      - name: Debug: Check AWS Secrets Are Available
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "❌ AWS_ACCESS_KEY_ID secret is missing"
+            exit 1
+          else
+            echo "✅ AWS_ACCESS_KEY_ID is available"
+          fi
+
+          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "❌ AWS_SECRET_ACCESS_KEY secret is missing"
+            exit 1
+          else
+            echo "✅ AWS_SECRET_ACCESS_KEY is available"
+          fi
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Appointment Service
+        run: |
+          ECR_REGISTRY=311141540400.dkr.ecr.us-west-2.amazonaws.com
+          if [ ! -d "./appointment-service" ]; then
+            echo "❌ appointment-service directory not found. Exiting."
+            exit 1
+          fi
+          docker build -t $ECR_REGISTRY/appointment-service:latest ./appointment-service
+          docker push $ECR_REGISTRY/appointment-service:latest
+
+      - name: Build and Push Patient Service
+        run: |
+          ECR_REGISTRY=311141540400.dkr.ecr.us-west-2.amazonaws.com
+          if [ ! -d "./patient-service" ]; then
+            echo "❌ patient-service directory not found. Exiting."
+            exit 1
+          fi
+          docker build -t $ECR_REGISTRY/patient-service:latest ./patient-service
+          docker push $ECR_REGISTRY/patient-service:latest
+
+
+
