@@ -1,12 +1,20 @@
+# Use official Node.js image
 FROM node:20-alpine
 
+# Create app directory
 WORKDIR /app
 
+# Copy package.json files
 COPY package*.json ./
-RUN npm ci --only=production
 
+# Install only production dependencies
+RUN npm install --omit=dev
+
+# Copy the rest of your application
 COPY . .
 
-EXPOSE 3001
+# Expose port (adjust if needed)
+EXPOSE 3000
 
-CMD ["npm", "start"]
+# Command to run the app
+CMD ["node", "index.js"]
